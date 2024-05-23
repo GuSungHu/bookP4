@@ -1,8 +1,10 @@
 package com.mysite.bookp4.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "Customer")
 public class Customer {
   @Id
