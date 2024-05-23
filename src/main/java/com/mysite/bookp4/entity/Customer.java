@@ -1,8 +1,10 @@
 package com.mysite.bookp4.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "Customer")
 public class Customer {
   @Id
@@ -10,15 +12,12 @@ public class Customer {
   private Long id;
 
   @Column(nullable = false)
-  private String title;
+  private String name;
 
-  @Column(nullable = false)
-  private String author;
+  @Column(unique = true, nullable = false)
+  private String email;
 
-  private String category;
-
-  @Column(nullable = false)
-  private boolean available;
+  private String phone;
 
   // Getters and setters
 }

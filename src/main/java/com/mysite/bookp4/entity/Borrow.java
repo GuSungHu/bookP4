@@ -1,10 +1,12 @@
 package com.mysite.bookp4.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 @Table(name = "Borrow")
 public class Borrow {
   @Id
@@ -13,17 +15,19 @@ public class Borrow {
 
   @ManyToOne
   @JoinColumn(name = "customer_id", nullable = false)
-  private Customer customer;
+  private Customer customerId;
 
   @ManyToOne
   @JoinColumn(name = "book_id", nullable = false)
-  private Book book;
+  private Book bookId;
 
   @Column(nullable = false)
-  private String transactionType;
+  private String transaction_type; //"대여" "반납"
 
   @Column(nullable = false)
-  private LocalDateTime transactionDate;
+  private LocalDateTime borrow_date;
+  @Column(nullable = true)
+  private LocalDateTime return_date;
 
   // Getters and setters
 }
