@@ -13,7 +13,7 @@ public class Borrow {
 
   @ManyToOne
   @JoinColumn(name = "customer_id", nullable = false)
-  private Customer customer;
+  private User user;
 
   @ManyToOne
   @JoinColumn(name = "book_id", nullable = false)
