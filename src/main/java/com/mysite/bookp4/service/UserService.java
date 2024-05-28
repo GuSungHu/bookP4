@@ -25,12 +25,12 @@ public class UserService {
     private UserDTO mapToDTO(User user) {
         UserDTO userDTO = modelMapper.map(user,UserDTO.class);
         return userDTO;
-        /*UserDTO useromerDTO = new UserDTO();
-        useromerDTO.setId(user.getId());
-        useromerDTO.setName(user.getName());
-        useromerDTO.setEmail(user.getEmail());
-        useromerDTO.setPhone(user.getPhone());
-        return useromerDTO;*/
+        /*UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setName(user.getName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPhone(user.getPhone());
+        return userDTO;*/
     }
 /*
     public List<UserDTO> getAllUser(){
@@ -43,7 +43,7 @@ public class UserService {
         //1. DTO => Entity
         User user = mapToEntity(userDTO);
         //2. DB에 저장 id가 있는경우 업데이트
-        user = userRepo.save(user);
+        userRepo.save(user);
         //3. Entity => DTO
         return mapToDTO(user);
     }
@@ -60,10 +60,10 @@ public class UserService {
     private User getUserById(Long user_id) {
         return userRepo.findById(user_id).orElse(null);
     }
-    //useromerID로 수정할  useromer를 찾아서 DTO로 리턴
+    //userID로 수정할  user를 찾아서 DTO로 리턴
     public UserDTO getUser(Long user_id) {
         User user = getUserById(user_id);
-        UserDTO useromerDTO = mapToDTO(user);
-        return useromerDTO;
+        UserDTO userDTO = mapToDTO(user);
+        return userDTO;
     }
 }

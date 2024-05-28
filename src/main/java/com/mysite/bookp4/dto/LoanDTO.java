@@ -6,19 +6,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BorrowDTO {
-  private Long id;
-  private Long customerId;
-  private Long bookId;
+public class LoanDTO {
 
-  //대여 or 반납
-  private String transaction_type;
+  private Long loanId;
 
-  private String borrow_date;
+  private User userId;
+  private Book bookId;
+
+  private String loan_date;
   private String return_date;
+  private String due_date;
+
+  private Boolean isReturned;
 }

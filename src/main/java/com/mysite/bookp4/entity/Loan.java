@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Loan {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long loanId;
 
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
@@ -21,13 +21,14 @@ public class Loan {
   @JoinColumn(name = "book_id", nullable = false)
   private Book bookId;
 
-  @Column(nullable = false)
-  private String transaction_type; //test
+  @Column(nullable = false, name = "is_returned")
+  private Boolean isReturned;
 
   @Column(nullable = false)
-  private LocalDateTime borrow_date;
-  @Column(nullable = true)
+  private LocalDateTime loan_date;
+  private LocalDateTime due_date;
   private LocalDateTime return_date;
+
 
   // Getters and setters
 }

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    //SELECT * FROM tbl_users WHERE email = ?
-    Optional<User> findById(Long user_id);
+    //FindByA(B b)일때 SELECT * FROM USER WHERE A = b
+    Optional<User> findByUserId(Long user_id);
 }
