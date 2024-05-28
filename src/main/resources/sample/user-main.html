@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>메인 대시보드</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light d-flex flex-row">
+      <a class="navbar-brand" href="#">도서관리 시스템</a>
+      <a class="nav-link btn btn-danger text-white" href="#">로그아웃</a>
+    </nav>
+    <div class="container mt-5">
+      <h2 class="text-center">사용자 초기화면</h2>
+      <div class="row">
+        <div class="col-md-12">
+          <hr />
+          <h3 class="d-flex justify-content-between">
+            <span>XXXX님의 대출 현황 </span>
+            <span>
+              <a class="btn btn-info text-white" href="#">대출</a>
+              <a class="btn btn-primary text-white" href="#">반납</a>
+            </span>
+          </h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>도서 제목</th>
+                <th>대출 날짜</th>
+                <th>반납 예정일</th>
+                <th>액션</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>The Great Gatsby</td>
+                <td>2024-05-01</td>
+                <td>2024-05-08</td>
+                <td>
+                  <button class="btn btn-warning">연장</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <hr />
+          <form class="form-inline my-4">
+            <input
+              class="form-control mr-sm-2"
+              type="search"
+              placeholder="검색어 입력"
+              aria-label="Search" />
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+              도서 검색
+            </button>
+          </form>
+          <h3>검색한 도서 목록</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>제목</th>
+                <th>저자</th>
+                <th>카테고리</th>
+                <th>대출 가능</th>
+                <td>조회</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>The Great Gatsby</td>
+                <td>Fitzgerald</td>
+                <td>Fiction</td>
+                <td>Yes</td>
+                <td><button class="btn btn-primary">조회</button></td>
+              </tr>
+              <tr>
+                <td>To Kill a Mockingbird</td>
+                <td>Lee</td>
+                <td>Fiction</td>
+                <td>No</td>
+                <td><button class="btn btn-primary">조회</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

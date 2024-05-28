@@ -1,7 +1,7 @@
 package com.mysite.bookp4.dto;
 
 import com.mysite.bookp4.entity.Book;
-import com.mysite.bookp4.entity.Customer;
+import com.mysite.bookp4.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

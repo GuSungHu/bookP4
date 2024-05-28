@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원 목록 조회</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">관리자 홈</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="book_list.html">도서 목록 조회</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="loan_list.html">대출 목록 조회</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="user_list.html">회원 목록 조회</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h3 class="text-center">회원 목록 조회</h3>
+      <form class="form-inline my-4">
+        <div class="input-group mr-sm-2">
+          <div class="input-group-prepend">
+            <button
+              class="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false">
+              검색 기준
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">이름</a>
+              <a class="dropdown-item" href="#">전화번호</a>
+            </div>
+          </div>
+          <input
+            class="form-control"
+            type="search"
+            placeholder="검색어 입력"
+            aria-label="Search" />
+        </div>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          검색
+        </button>
+      </form>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>아이디</th>
+            <th>이름</th>
+            <th>전화번호</th>
+            <th>주소</th>
+            <th>조회</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>johndoe</td>
+            <td>John Doe</td>
+            <td>123-456-7890</td>
+            <td>123 Main St</td>
+            <td><button class="btn btn-primary btn-sm">조회</button></td>
+          </tr>
+          <tr>
+            <td>janesmith</td>
+            <td>Jane Smith</td>
+            <td>987-654-3210</td>
+            <td>456 Elm St</td>
+            <td><button class="btn btn-primary btn-sm">조회</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
