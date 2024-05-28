@@ -23,13 +23,20 @@ public class UserController {
         model.addAttribute("users", userService.getAllUser());
         return "user-list";
     }
+    /*
     @GetMapping("/createUser")
     public String createUser(Model model) {
         model.addAttribute("user", new UserDTO());
         return "user-form";
+    }*/
+
+    @GetMapping("/createUser")
+    public String createUser(Model model) {
+        model.addAttribute("user", new UserDTO());
+        return "user-register";
     }
 
-    @PostMapping("/saveCust")
+    @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") UserDTO userDTO) throws ParseException {
         System.out.println("입력한 userDTO 객체 : " + userDTO);
         userService.saveUserDetails(userDTO);

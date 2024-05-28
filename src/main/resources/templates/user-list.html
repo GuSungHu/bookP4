@@ -15,6 +15,7 @@
     <thead>
     <tr>
         <th>이름</th>
+        <th>이메일</th>
         <th>비밀번호</th>
         <th>폰</th>
         <th>액션</th>
@@ -23,6 +24,7 @@
     <tbody>
     <tr th:each="exp:${users}">
         <td th:text="${exp.name}"></td>
+        <td th:text="${exp.email}"></td>
         <td th:text="${exp.password}"></td>
         <td th:text="${exp.phone}"></td>
 

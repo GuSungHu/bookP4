@@ -8,9 +8,12 @@
 <h1 th:if="${user.user_id == null}">새 회원</h1>
 <h1 th:if="${user.user_id != null}">회원 수정</h1>
 <hr />
-<form id="registerForm" th:object="${user}" th:action="@{/saveCust}" method="post">
+<form id="registerForm" th:object="${user}" th:action="@{/saveUser}" method="post">
     <input type="text" placeholder="이름 입력" th:field="*{name}" />
     <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <br /><br />
+    <input type="text" placeholder="이메일 입력" th:field="*{email}" />
+    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
     <br /><br />
     <input type="text" placeholder="비밀번호 입력" th:field="*{password}" />
     <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
