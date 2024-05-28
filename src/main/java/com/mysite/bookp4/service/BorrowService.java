@@ -1,13 +1,12 @@
 package com.mysite.bookp4.service;
 
 import com.mysite.bookp4.dto.BorrowDTO;
-import com.mysite.bookp4.entity.Borrow;
+import com.mysite.bookp4.entity.Loan;
 import com.mysite.bookp4.repository.BorrowRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +19,16 @@ public class BorrowService {
 
 
   public List<BorrowDTO> getAllBorrows() {
-    List<Borrow> borrowList = brwRepo.findAll();
+    List<Loan> loanList = brwRepo.findAll();
     List<BorrowDTO> dtoList = new ArrayList<>();
-    for(Borrow borrow : borrowList) {
-      dtoList.add(borrowToDto(borrow));
+    for(Loan loan : loanList) {
+      dtoList.add(borrowToDto(loan));
     }
     return dtoList;
   }
 
-  private BorrowDTO borrowToDto(Borrow borrow){
-    BorrowDTO dto = modelMapper.map(borrow, BorrowDTO.class);
+  private BorrowDTO borrowToDto(Loan loan){
+    BorrowDTO dto = modelMapper.map(loan, BorrowDTO.class);
     dto.setBorrow_date(dto.getBorrow_date().substring(2,10));
     dto.setReturn_date(dto.getReturn_date().substring(2,10));
     return dto;
