@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "Borrow")
-public class Borrow {
+@Table(name = "Loan")
+public class Loan {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "customer_id", nullable = false)
-  private User user;
+  @JoinColumn(name = "user_id", nullable = false)
+  private User userId;
 
   @ManyToOne
   @JoinColumn(name = "book_id", nullable = false)
