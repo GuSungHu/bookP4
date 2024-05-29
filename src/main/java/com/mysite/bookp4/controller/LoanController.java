@@ -54,16 +54,29 @@ public class LoanController {
     model.addAttribute("userLoans", userLoans);
     return "user-detail";
   }
+
   @PostMapping("/loan/{id}/extend")
   public String extendLoan(@PathVariable("id") Long id) {
     loanService.extendDueDate(id, 3);
     return "redirect:/loan/" + id;
   }
 
-  @PostMapping("/loan/{id}/return")
-  public String returnLoan(@PathVariable("id") Long id) {
+  @PostMapping("/loan/{userId}/return")
+  public String returnLoan(@PathVariable("userId") Long id) {
     loanService.returnLoan(id);
     return "redirect:/loan/" + id;
+  }
+
+  @PostMapping("/loan/user/{userId}/extend")
+  public String extendLoan2(@RequestParam("loanId") Long loanId, @PathVariable("userId") Long userId) {
+    loanService.extendDueDate(loanId, 3);
+    return "redirect:/loan/user/" + userId;
+  }
+
+  @PostMapping("/loan/user/{userId}/return")
+  public String returnLoan2(@RequestParam("loanId") Long loanId, @PathVariable("userId") Long userId) {
+    loanService.returnLoan(loanId);
+    return "redirect:/loan/user/" + userId;
   }
 
   @GetMapping("/admin")

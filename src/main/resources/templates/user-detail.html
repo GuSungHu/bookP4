@@ -45,15 +45,21 @@
           <td th:text="${loan.loan_date}"></td>
           <td th:text="${loan.due_date}"></td>
           <td>
-            <button class="btn btn-warning btn-spacing" onclick="sendRequest('/loan/' + [[${loan.loanId}]] + '/extend')">연장</button>
-            <button class="btn btn-primary" onclick="sendRequest('/loan/' + [[${loan.loanId}]] + '/return')">반납</button>
+            <form th:action="@{/loan/user/{userId}/extend(userId=${user.userId})}" method="post" style="display: inline;">
+            <input type="hidden" name="loanId" th:value="${loan.loanId}" />
+            <button type="submit" class="btn btn-warning btn-spacing">연장</button>
+            </form>
+            <form th:action="@{/loan/user/{userId}/return(userId=${user.userId})}" method="post" style="display: inline;">
+              <input type="hidden" name="loanId" th:value="${loan.loanId}" />
+              <button type="submit" class="btn btn-primary">반납</button>
+            </form>
           </td>
         </tr>
         </tbody>
       </table>
       <hr />
       <div class="text-end">
-        <button type="submit" class="btn btn-danger">닫기</button>
+        <a href="/admin" class="btn btn-danger">닫기</a>
       </div>
     </div>
   </div>
