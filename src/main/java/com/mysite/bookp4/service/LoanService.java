@@ -1,8 +1,10 @@
 package com.mysite.bookp4.service;
 
 import com.mysite.bookp4.dto.LoanDTO;
+import com.mysite.bookp4.entity.Book;
 import com.mysite.bookp4.entity.Loan;
 import com.mysite.bookp4.entity.User;
+import com.mysite.bookp4.repository.BookRepository;
 import com.mysite.bookp4.repository.LoanRepository;
 import com.mysite.bookp4.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,13 +14,16 @@ import util.DateTimeUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class LoanService {
 
   private final LoanRepository loanRepository;
+  private final BookRepository bookRepository;
   private final ModelMapper modelMapper;
 
 
@@ -68,6 +73,13 @@ public class LoanService {
     return loanListToDtoList(loans);
   }
 
+  public List<LoanDTO> getUnreturnedLoansOrderedByDueDate() {
+    List<Loan> loans = loanRepository.findUnreturnedLoans();
+    return loanListToDtoList(loans.stream()
+            .sorted(Comparator.comparing(Loan::getDue_date))
+            .collect(Collectors.toList()));
+  }
+
 
 
   //개별 read
@@ -91,8 +103,13 @@ public class LoanService {
     loan.setIsReturned(true);
     loan.setReturn_date(LocalDateTime.now());
     loanRepository.save(loan);
+
+    Book book = loan.getBookId();
+    book.setAvailable(true);
+    bookRepository.save(book);
   }
 
+  //연장
   public void extendDueDate(Long id, int days) {
     Loan loan = loanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:" + id));
     loan.setDue_date(loan.getDue_date().plusDays(days));

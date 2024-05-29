@@ -21,5 +21,9 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
   List<Loan> findByUserNameContaining(@Param("name") String name);
 
   List<Loan> findByUserId(User userId);
+
   List<Loan> findByUserIdAndIsReturnedFalse(User userId);
+
+  @Query("SELECT l FROM Loan l WHERE l.isReturned = false")
+  List<Loan> findUnreturnedLoans();
 }
