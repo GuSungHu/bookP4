@@ -45,6 +45,15 @@ public class LoanController {
     model.addAttribute("userLoans", userLoans);
     return "loan-detail";
   }
+  
+  @GetMapping("/loan/user/{userId}")
+  public String showUserDetail(@PathVariable("userId") Long userId, Model model) {
+    UserDTO user = userService.getUser(userId);
+    List<LoanDTO> userLoans = loanService.getUnreturnedLoansByUserId(userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:" + userId)));
+    model.addAttribute("user", user); //UserDTO user
+    model.addAttribute("userLoans", userLoans);
+    return "user-detail";
+  }
 
   @GetMapping("/loan/user/{userId}")
   public String showUserDetail(@PathVariable("userId") Long userId, Model model) {
