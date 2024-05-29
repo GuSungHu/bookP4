@@ -2,7 +2,9 @@ package com.mysite.bookp4.controller;
 
 import com.mysite.bookp4.dto.LoanDTO;
 import com.mysite.bookp4.dto.UserDTO;
+import com.mysite.bookp4.repository.UserRepository;
 import com.mysite.bookp4.service.LoanService;
+import com.mysite.bookp4.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,8 @@ import java.util.List;
 public class LoanController {
 
   private final LoanService loanService;
+  private final UserService userService;
+  private final UserRepository userRepository;
 
   @GetMapping("/loan")
   public String showBorrowList(@RequestParam(value = "type", required = false) String type,
@@ -42,6 +46,16 @@ public class LoanController {
     return "loan-detail";
   }
 
+  @GetMapping("/loan/user/{userId}")
+  public String showUserDetail(@PathVariable("userId") Long userId, Model model) {
+    UserDTO user = userService.getUser(userId);
+    List<LoanDTO> userLoans = loanService.getUnreturnedLoansByUserId(userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:" + userId)));
+    model.addAttribute("user", user); //UserDTO user
+    model.addAttribute("userLoans", userLoans);
+    return "user-detail";
+  }
+
+
   @PostMapping("/loan/{id}/extend")
   public String extendLoan(@PathVariable("id") Long id) {
     loanService.extendDueDate(id, 3);
@@ -60,5 +74,4 @@ public class LoanController {
     model.addAttribute("dtoList", dtoList);
     return "admin-main";
   }
-
 }

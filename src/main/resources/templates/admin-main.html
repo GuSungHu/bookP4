@@ -27,7 +27,9 @@
       <td th:text="${loan.userId.phone}"></td>
       <td th:text="${loan.loan_date}"></td>
       <td th:text="${loan.due_date}"></td>
-      <td><button class="btn btn-primary btn-sm">조회</button></td>
+      <td>
+        <a th:href="@{/loan/user/{userId}(userId=${loan.userId.userId})}" class="btn btn-primary btn-sm">조회</a>
+      </td>
     </tr>
     </tbody>
   </table>
