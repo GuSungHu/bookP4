@@ -51,9 +51,9 @@
                 <button class="btn btn-primary btn-sm">조회</button>
             </td>
             <td>
-                <a onclick="return confirm('정말로 삭제할까요?')" th:href="@{/deleteUser(user_id=${user.user_id})}">삭제</a>
+                <a onclick="return confirm('정말로 삭제할까요?')" th:href="@{/deleteUser(user_id=${user.userId})}">삭제</a>
                 |
-                <a th:href="@{/updateUser(user_id=${user.user_id})}">수정</a>
+                <a th:href="@{/updateUser(user_id=${user.userId})}">수정</a>
             </td>
         </tr>
         </tbody>

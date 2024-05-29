@@ -54,4 +54,11 @@ public class LoanController {
     return "redirect:/loan/" + id;
   }
 
+  @GetMapping("/admin")
+  public String showBorrowList(Model model) {
+    List<LoanDTO> dtoList = loanService.getUnreturnedLoansOrderedByDueDate();
+    model.addAttribute("dtoList", dtoList);
+    return "admin-main";
+  }
+
 }
