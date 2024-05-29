@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <h3 class="text-center" th:text="${user.userId == null} ? '새 회원' : '회원 수정'">회원가입</h3>
+            <form id="registerForm" th:object="${user}" th:action="@{/registUser}" method="post" onsubmit="return validateForm()">
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" class="form-control" id="email" placeholder="이메일을 입력하세요" th:field="*{email}" required />
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력하세요" th:field="*{password}" required />
+                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password2">비밀번호 확인</label>
+                    <input type="password" class="form-control" id="password2" placeholder="비밀번호를 다시 입력하세요" th:field="*{password2}" required />
+                    <span id="passwordMismatchError" style="display:none; color:red;">비밀번호가 일치하지 않습니다.</span>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" class="form-control" id="name" placeholder="이름을 입력하세요" th:field="*{name}" required />
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+                <div class="form-group">
+                    <label for="phone">핸드폰</label>
+                    <input type="text" class="form-control" id="phone" placeholder="핸드폰 번호를 입력하세요" th:field="*{phone}" required />
+                    <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" th:text="${user.userId == null} ? '회원가입' : '수정'"></button>
+                <a class="btn btn-secondary btn-block mt-2" th:href="@{/login}">돌아가기</a>
+                <input type="hidden" th:field="*{userId}" />
+            </form>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/validateForm.js}"></script>
+</body>
+</html>
