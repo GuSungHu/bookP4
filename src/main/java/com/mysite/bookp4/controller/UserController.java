@@ -1,6 +1,7 @@
 package com.mysite.bookp4.controller;
 
 import com.mysite.bookp4.dto.UserDTO;
+import com.mysite.bookp4.dto.UserFilterDTO;
 import com.mysite.bookp4.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ public class UserController {
     @GetMapping("/users")
     public String users(Model model) {
         model.addAttribute("users", userService.getAllUser());
+        model.addAttribute("filter", new UserFilterDTO());
         return "user-list";
     }
     /*
@@ -36,6 +38,7 @@ public class UserController {
         return "user-register";
     }
 
+
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") UserDTO userDTO) throws ParseException {
         System.out.println("입력한 userDTO 객체 : " + userDTO);
@@ -45,18 +48,18 @@ public class UserController {
 
     //삭제하기
     @GetMapping("/deleteUser")
-    public String deleteUser(@RequestParam("user_id") Long user_id) {
-        System.out.println("삭제번호:"+user_id);
-        userService.deleteUser(user_id);
+    public String deleteUser(@RequestParam("userId") Long userId) {
+        System.out.println("삭제번호:"+userId);
+        userService.deleteUser(userId);
         return "redirect:/users";
     }
 
     //수정 보이기
     @GetMapping("/updateUser")
-    public String updateUser(@RequestParam Long user_id, Model model) {
-        System.out.println("업데이트 아이템 : " + user_id);
-        model.addAttribute("user", userService.getUser(user_id));
-        return "user-form";
+    public String updateUser(@RequestParam Long userId, Model model) {
+        System.out.println("업데이트 아이템 : " + userId);
+        model.addAttribute("user", userService.getUser(userId));
+        return "user-register";
     }
 
 }

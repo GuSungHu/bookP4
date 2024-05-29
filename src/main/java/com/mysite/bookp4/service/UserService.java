@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +43,8 @@ public class UserService {
     public UserDTO saveUserDetails(UserDTO userDTO) throws ParseException {
         //1. DTO => Entity
         User user = mapToEntity(userDTO);
+
+
         //2. DB에 저장 id가 있는경우 업데이트
         userRepo.save(user);
         //3. Entity => DTO
@@ -52,18 +55,32 @@ public class UserService {
         return user;
     }
 
-    public void deleteUser(Long user_id) {
-        User user = getUserById(user_id);
+    public void deleteUser(Long userId) {
+        User user = getUserById(userId);
         userRepo.delete(user);
     }
 
-    private User getUserById(Long user_id) {
-        return userRepo.findById(user_id).orElse(null);
+    private User getUserById(Long userId) {
+        return userRepo.findById(userId).orElseThrow();
     }
     //userID로 수정할  user를 찾아서 DTO로 리턴
-    public UserDTO getUser(Long user_id) {
-        User user = getUserById(user_id);
+    public UserDTO getUser(Long userId) {
+        User user = getUserById(userId);
         UserDTO userDTO = mapToDTO(user);
         return userDTO;
+    }
+
+    public List<UserDTO> getFilterUsers(String keyword, String searchBy){
+        List<User> list;
+        if ("name".equals(searchBy)) {
+            list = userRepo.findByNameContaining(keyword);
+        } else if ("phone".equals(searchBy)) {
+            list = userRepo.findByPhoneContaining(keyword);
+        } else {
+            // 기본적으로 이름으로 검색
+            list = userRepo.findByNameContaining(keyword);
+        }
+        List<UserDTO> filterlist = list.stream().map(this::mapToDTO).collect(Collectors. toList());
+        return filterlist;
     }
 }

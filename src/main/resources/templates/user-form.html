@@ -9,8 +9,8 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <h3 th:if="${user.user_id == null}">새 회원</h3>
-            <h3 th:if="${user.user_id != null}">회원 수정</h3>
+            <h3 th:if="${user.userId == null}">새 회원</h3>
+            <h3 th:if="${user.userId != null}">회원 수정</h3>
             <hr />
             <form id="registerForm" th:object="${user}" th:action="@{/saveUser}" method="post">
                 <div class="mb-3">
@@ -33,9 +33,9 @@
                     <input type="text" class="form-control" id="phone" placeholder="핸드폰 입력" th:field="*{phone}" />
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
                 </div>
-                <button type="submit" class="btn btn-primary w-100" th:text="${user.user_id == null} ? '저장' : '수정'"></button>
+                <button type="submit" class="btn btn-primary w-100" th:text="${user.userId == null} ? '저장' : '수정'"></button>
                 <a class="btn btn-secondary w-100 mt-2" th:href="@{/users}">돌아가기</a>
-                <input type="hidden" th:field="*{user_id}" />
+                <input type="hidden" th:field="*{userId}" />
             </form>
         </div>
     </div>
