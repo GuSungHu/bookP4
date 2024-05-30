@@ -23,6 +23,7 @@ public class UserController {
     public String users(Model model) {
         model.addAttribute("users", userService.getAllUser());
         model.addAttribute("filter", new UserFilterDTO());
+        //model.addAttribute("loggedInUser", userService.getLoggedInUser());
         return "user-list";
     }
     /*

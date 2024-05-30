@@ -9,6 +9,10 @@
 <body>
 <div class="container mt-5">
     <h3 class="text-center">회원 목록 조회</h3>
+    <div>
+        <a th:href="@{/logout}">로그아웃(임시)</a>
+<!--        <span th:text="'로그인한 사용자: ' + ${loggedInUser.name} + ' (id = ' + ${loggedInUser.userId} + ')'"></span>-->
+    </div>
     <a th:href="@{/createUser}">등록(임시)</a>
     <form class="row g-3 my-4" method="get" th:object="${filter}" th:action="@{/filterUsers}">
         <div class="col-auto">

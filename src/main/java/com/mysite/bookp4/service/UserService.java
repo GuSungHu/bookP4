@@ -5,6 +5,10 @@ import com.mysite.bookp4.entity.User;
 import com.mysite.bookp4.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -17,6 +21,7 @@ public class UserService {
 
     private final UserRepository userRepo;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> getAllUser(){
         return userRepo.findAll();
@@ -41,10 +46,10 @@ public class UserService {
     }*/
 
     public UserDTO saveUserDetails(UserDTO userDTO) throws ParseException {
+        System.out.println("세이브 유저");
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         //1. DTO => Entity
         User user = mapToEntity(userDTO);
-
-
         //2. DB에 저장 id가 있는경우 업데이트
         userRepo.save(user);
         //3. Entity => DTO
@@ -83,4 +88,13 @@ public class UserService {
         List<UserDTO> filterlist = list.stream().map(this::mapToDTO).collect(Collectors. toList());
         return filterlist;
     }
+
+    //로그인 된 유저정보 가져오기
+    /*
+    public User getLoggedInUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loginUserEmail = auth.getName();
+        return userRepo.findByEmail( loginUserEmail ).orElseThrow(()->
+                new UsernameNotFoundException("이메일을 찾을수 없습니다"));
+    }*/
 }

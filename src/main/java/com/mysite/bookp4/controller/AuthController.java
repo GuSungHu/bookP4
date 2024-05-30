@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.text.ParseException;
 
 @Controller
@@ -20,8 +21,12 @@ public class AuthController {
     private final UserService userService;
 
     @GetMapping({"/login","/"})
-    public String showLoginPage() {
-        return "login";
+    public String showLoginPage(Principal principal) {
+        System.out.println("로그인 컨트롤러");
+        if (principal == null) {
+            return "login";
+        }
+       return "redirect:/users";
     }
 
     @GetMapping("/register")
@@ -31,15 +36,21 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("user") UserDTO user) {
+    public String register(@ModelAttribute("user") UserDTO user, Model model) throws ParseException {
         System.out.println("유저DTO객체 :"+user);
+        userService.saveUserDetails(user);
         return "redirect:/login";
     }
 
     @PostMapping("/registUser")
-    public String registUser(@ModelAttribute("user") UserDTO userDTO) throws ParseException {
-        System.out.println("입력한 userDTO 객체 : " + userDTO);
-        userService.saveUserDetails(userDTO);
-        return "redirect:/login";
+    public String registUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult result, Model model) throws ParseException {
+        System.out.println("유저DTO객체 :"+user);
+        if (result.hasErrors()) {
+            return "register";
+        }
+        userService.saveUserDetails(user);
+        //redirectAttributes.addFlashAttribute("successMsg", true);
+        model.addAttribute("successMsg", true);
+        return "/login";
     }
 }
