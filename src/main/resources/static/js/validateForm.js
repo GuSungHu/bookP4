@@ -18,4 +18,5 @@ function validateForm() {
 
     passwordMismatchError.style.display = 'none';
     return true;
+
 }

@@ -40,11 +40,13 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block" th:text="${user.userId == null} ? '회원가입' : '수정'"></button>
                 <a class="btn btn-secondary btn-block mt-2" th:href="@{/users}">돌아가기</a>
+                <button type="button" class="btn btn-secondary btn-block mt-2" onclick="goBack()">돌아가기</button>
                 <input type="hidden" th:field="*{userId}" />
             </form>
         </div>
     </div>
 </div>
 <script th:src="@{/js/validateForm.js}"></script>
+<script th:src="@{/js/goBack.js}"></script>
 </body>
 </html>
