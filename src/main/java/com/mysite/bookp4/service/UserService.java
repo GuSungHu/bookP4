@@ -65,7 +65,7 @@ public class UserService {
         userRepo.delete(user);
     }
 
-    private User getUserById(Long userId) {
+    public User getUserById(Long userId) {
         return userRepo.findById(userId).orElseThrow();
     }
     //userID로 수정할  user를 찾아서 DTO로 리턴
