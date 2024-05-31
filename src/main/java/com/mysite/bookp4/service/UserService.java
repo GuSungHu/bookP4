@@ -89,8 +89,8 @@ public class UserService {
         return filterlist;
     }
 
-    //로그인 된 유저정보 가져오기
-    /*
+    //로그인 된 유저정보 가져오기 , 비활성화시
+/*
     public User getLoggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String loginUserEmail = auth.getName();

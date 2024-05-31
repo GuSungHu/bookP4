@@ -23,7 +23,7 @@ public class UserController {
     public String users(Model model) {
         model.addAttribute("users", userService.getAllUser());
         model.addAttribute("filter", new UserFilterDTO());
-        //model.addAttribute("loggedInUser", userService.getLoggedInUser());
+        //model.addAttribute("loggedInUser", userService.getLoggedInUser());//로그인 유저 정보 비활성화
         return "user-list";
     }
     /*
@@ -62,5 +62,7 @@ public class UserController {
         model.addAttribute("user", userService.getUser(userId));
         return "user-register";
     }
+
+
 
 }

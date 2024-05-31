@@ -53,4 +53,6 @@ public class AuthController {
         model.addAttribute("successMsg", true);
         return "/login";
     }
+
+
 }
