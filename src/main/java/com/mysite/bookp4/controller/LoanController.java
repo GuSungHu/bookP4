@@ -2,6 +2,7 @@ package com.mysite.bookp4.controller;
 
 import com.mysite.bookp4.dto.LoanDTO;
 import com.mysite.bookp4.dto.UserDTO;
+import com.mysite.bookp4.entity.User;
 import com.mysite.bookp4.repository.UserRepository;
 import com.mysite.bookp4.service.LoanService;
 import com.mysite.bookp4.service.UserService;
@@ -85,4 +86,14 @@ public class LoanController {
     model.addAttribute("dtoList", dtoList);
     return "admin-main";
   }
+
+  @PostMapping("/main/extend")
+  public String extendLoan3(@RequestParam("loanId") Long loanId, @RequestParam("userId") Long userId, Model model) {
+    User user = userService.getUserById(userId);
+
+    loanService.extendDueDate(loanId, 3);
+    model.addAttribute("user", user);
+    return "redirect:/main";
+  }
+
 }

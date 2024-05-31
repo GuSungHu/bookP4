@@ -43,8 +43,7 @@
             <th>이름</th>
             <th>폰</th>
             <th>이메일</th>
-            <th>조회</th>
-            <th>액션(임시)</th>
+            <th>조회 및 수정</th>
         </tr>
         </thead>
         <tbody>
@@ -54,11 +53,9 @@
             <td th:text="${user.email}"></td>
             <td>
                 <a class="btn btn-primary btn-sm" th:href="@{/loan/user/{userId}(userId=${user.userId})}">조회</a>
-            </td>
-            <td>
-                <a class="btn btn-secondary btn-sm" onclick="return confirm('정말로 삭제할까요?')" th:href="@{/deleteUser(userId=${user.userId})}">삭제</a>
-                |
-                <a class="btn btn-primary btn-sm" th:href="@{/updateUser(userId=${user.userId})}">수정</a>
+                <a class="btn btn-secondary btn-sm" th:href="@{/updateUser(userId=${user.userId})}">수정</a>
+                <!--                <a class="btn btn-secondary btn-sm" onclick="return confirm('정말로 삭제할까요?')" th:href="@{/deleteUser(userId=${user.userId})}">삭제</a>-->
+                <!--                |-->
             </td>
         </tr>
         </tbody>
