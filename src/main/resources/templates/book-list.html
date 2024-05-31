@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale.0"/>
+    <title>도서 목록 조회</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar navbar-extend-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">관리자 홈</a>
+    <button class="navbar-toggler" type="button" data-target="collapse"
+            data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="books">도서 목록 조회</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="loans">대출 목록 조회</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="user">회원 목록 조회</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="containier mt-5">
+    <h3 class="text-center">도서 목록 조회</h3>
+    <from class="from-inline my-4">
+        <div class="input-group mr-sm-2">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                        data-toggle="dropdown aria-haspopup="true" aria-expanded="false">
+                검색 기준</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">제목</a>
+                    <a class="dropdown-item" href="#">저자</a>
+                </div>
+            </div>
+            <input class="form-control" type="search" placeholder="검색어 입력"
+                   aria-label="Search"/>
+        </div>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            검색</button>
+    </from>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>도서 ID</th>
+            <th>제목</th>
+            <th>저자</th>
+            <th>카테고리</th>
+            <th>대출 가능</th>
+            <th>액션</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.category}"></td>
+            <td th:text="${book.available ? 'Yes' : 'No'}"></td>
+            <td>
+                <a th:href="@{/books/view/{id}(id=${book.id})}" class="btn btn-primary btn-sm">조회</a>
+                <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-warning btn-sm">수정</a>
+                <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger btn-sm">삭제</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <hr />
+    <div class="text-right">
+        <a hreg="/books/from" class="btn btn-primaty btn-sm mr-5">도서 등록</a>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
