@@ -25,7 +25,7 @@ public class LoanController {
   private final UserRepository userRepository;
 
   @GetMapping("/loan")
-  public String showBorrowList(@RequestParam(value = "type", required = false) String type,
+  public String showLoanList(@RequestParam(value = "type", required = false) String type,
                                @RequestParam(value = "text", required = false) String text,
                                Model model) {
     List<LoanDTO> dtoList;
