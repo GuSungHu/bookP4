@@ -78,13 +78,9 @@ public class AuthController {
 
 
         List<LoanDTO> loans = loanService.getUnreturnedLoansByUserId(user);
-        List<Book> books;
+        List<BookDTO> books;
         if (type == null) books = null;
-        else if (type.equals("title")) {
-            books = bookService.findByTitle(text);
-        } else {
-            books = bookService.findByAuthor(text);
-        }
+        else books = bookService.searchBooks(type, text);
 
         model.addAttribute("user", user);
         model.addAttribute("loans",loans);
