@@ -5,6 +5,7 @@ import com.mysite.bookp4.dto.LoanDTO;
 import com.mysite.bookp4.entity.Book;
 import com.mysite.bookp4.entity.Loan;
 import com.mysite.bookp4.repository.BookRepository;
+import com.mysite.bookp4.repository.LoanRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class BookService {
 
   private final BookRepository bookRepository;
   private final ModelMapper modelMapper;
+  private final LoanRepository loanRepository;
 
   private List<BookDTO> booksToDto(List<Book> books) {
     List<BookDTO> dtoList = new ArrayList<>();
@@ -49,6 +51,12 @@ public class BookService {
     return booksToDto(books);
   }
 
+  public BookDTO getBookById(Long bookId) {
+    Book book = bookRepository.findById(bookId)
+            .orElseThrow(() -> new IllegalArgumentException("BookId가 없습니다 :" + bookId));
+    return mapToDTO(book);
+  }
+
   public void addBook(BookDTO dto) {
     Book book = mapToBook(dto);
     bookRepository.save(book);
@@ -64,7 +72,16 @@ public class BookService {
     bookRepository.save(book);
   }
 
-  public void deleteBook(Long id) {
-    bookRepository.deleteById(id);
+  public void deleteBook(Long bookId) {
+    // 특정 Book 엔티티와 관련된 Loan 엔티티의 수를 확인
+    long loanCount = loanRepository.countByBookId(bookRepository.findByBookId(bookId));
+
+    if (loanCount == 0) {
+      // 관련된 Loan 엔티티가 없으면 Book 엔티티 삭제
+      bookRepository.deleteById(bookId);
+    } else {
+      // 관련된 Loan 엔티티가 있으면 예외를 던지거나 다른 처리 수행
+      throw new IllegalStateException("Cannot delete book with active loans");
+    }
   }
 }

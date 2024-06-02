@@ -3,6 +3,8 @@ package com.mysite.bookp4.controller;
 import com.mysite.bookp4.dto.BookDTO;
 import com.mysite.bookp4.entity.Book;
 import com.mysite.bookp4.service.BookService;
+import com.mysite.bookp4.service.LoanService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,26 +30,33 @@ public class BookController {
     return "book-list";
   }
 
-//
-//  @PostMapping
-//  public Book createBook(@RequestBody Book book) {
-//    return bookService.save(book);
-//  }
-//
-//  @PostMapping("/{id}")
-//  public Book updateBook(@PathVariable Long id, @RequestBody Book bookDetails) {
-//    return bookService.findById(id).map(book -> {
-//      book.setTitle(bookDetails.getTitle());
-//      book.setAuthor(bookDetails.getAuthor());
-//      book.setCategory(bookDetails.getCategory());
-//      book.setAvailable(bookDetails.isAvailable());
-//      return bookService.save(bookDetails);
-//    }).orElseThrow(() -> new RuntimeException("Book not found whit id" + id));
-//
-//  }
-//
-//  @DeleteMapping("/{id}")
-//  public void deleteBook(@PathVariable Long id) {
-//    bookService.deleteById(id);
+  @GetMapping("books/delete/{bookId}")
+  public String deleteBook(@PathVariable Long bookId) {
+    bookService.deleteBook(bookId);
+    return "redirect:/books";
+  }
+
+  @GetMapping("/books/form")
+  public String showNewBookForm(Model model) {
+    model.addAttribute("book", new Book());
+    return "book-form";
+  }
+
+  @GetMapping("books/edit/{bookId}")
+  public String showEditBookForm(@PathVariable Long bookId, Model model) {
+    model.addAttribute("book", bookService.getBookById(bookId));
+    return "book-form";
+  }
+
+  @GetMapping("books/view/{bookId}")
+  public String showViewBookDetail(@PathVariable Long bookId, Model model) {
+    model.addAttribute("book", bookService.getBookById(bookId));
+    return "book-detail";
+  }
+
+//  @PostMapping("books/save")
+//  public String saveBook(@ModelAttribute Book book) {
+//    bookService.save(book);
+//    return "redirect:/books";
 //  }
 }

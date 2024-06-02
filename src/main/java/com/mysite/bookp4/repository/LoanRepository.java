@@ -26,4 +26,7 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
 
   @Query("SELECT l FROM Loan l WHERE l.isReturned = false")
   List<Loan> findUnreturnedLoans();
+
+  long countByBookId(Book bookId);
+  long countByUserId(User userId);
 }

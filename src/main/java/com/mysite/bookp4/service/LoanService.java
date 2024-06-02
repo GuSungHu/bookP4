@@ -6,11 +6,10 @@ import com.mysite.bookp4.entity.Loan;
 import com.mysite.bookp4.entity.User;
 import com.mysite.bookp4.repository.BookRepository;
 import com.mysite.bookp4.repository.LoanRepository;
-import com.mysite.bookp4.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import util.DateTimeUtil;
+import com.mysite.bookp4.util.DateTimeUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
