@@ -23,6 +23,10 @@ public class UserFilterController {
         System.out.println(userFilterDTO);
         List<UserDTO> list = userService.getFilterUsers(userFilterDTO.getKeyword(),userFilterDTO.getSearchBy());
         model.addAttribute("users", list);
+        for (UserDTO userDTO : list) {
+            System.out.println("여 "+userDTO);
+        }
+        System.out.println("여기");
         return "user-list";
     }
 }

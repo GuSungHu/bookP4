@@ -43,7 +43,7 @@
             <td>
                 <a th:href="@{/books/view/{id}(id=${book.bookId})}" class="btn btn-primary btn-sm">조회</a>
                 <a th:href="@{/books/edit/{id}(id=${book.bookId})}" class="btn btn-warning btn-sm">수정</a>
-                <a th:href="@{/books/delete/{id}(id=${book.bookId})}" class="btn btn-danger btn-sm">삭제</a>
+                <a th:href="@{/books/delete/{id}(id=${book.bookId})}" onclick="return confirm('정말로 삭제할까요?')" class="btn btn-danger btn-sm">삭제</a>
             </td>
         </tr>
         </tbody>

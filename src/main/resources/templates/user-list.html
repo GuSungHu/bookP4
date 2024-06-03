@@ -9,7 +9,7 @@
         <a th:href="@{/logout}">로그아웃(임시)</a>
 <!--        <span th:text="'로그인한 사용자: ' + ${loggedInUser.name} + ' (id = ' + ${loggedInUser.userId} + ')'"></span>-->
     </div>
-    <a th:href="@{/createUser}">등록(임시)</a>
+    <a th:href="@{/createUser}">회원추가(임시)</a>
     <form class="row g-3 my-4" method="get" th:object="${filter}" th:action="@{/filterUsers}">
         <div class="col-auto">
             <select class="form-select" name="type" th:field="*{searchBy}">

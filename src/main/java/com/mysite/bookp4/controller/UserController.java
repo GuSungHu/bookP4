@@ -3,6 +3,7 @@ package com.mysite.bookp4.controller;
 import com.mysite.bookp4.dto.UserDTO;
 import com.mysite.bookp4.dto.UserFilterDTO;
 import com.mysite.bookp4.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,7 @@ public class UserController {
     public String users(Model model) {
         model.addAttribute("users", userService.getAllUser());
         model.addAttribute("filter", new UserFilterDTO());
-        //model.addAttribute("loggedInUser", userService.getLoggedInUser());//로그인 유저 정보 비활성화
+        model.addAttribute("loggedInUser", userService.getLoggedInUser());//로그인 유저 정보 비활성화
         return "user-list";
     }
     /*
@@ -44,13 +45,14 @@ public class UserController {
     public String saveUser(@ModelAttribute("user") UserDTO userDTO) throws ParseException {
         System.out.println("입력한 userDTO 객체 : " + userDTO);
         userService.saveUserDetails(userDTO);
-        return "redirect:/users";
+        // 다른 경우에는 기본값으로 users 페이지로 리다이렉트
+        return userService.getLoggedInUser().getRole() == 1 ? "redirect:/users" : "redirect:/main";
     }
 
     //삭제하기
     @GetMapping("/deleteUser")
     public String deleteUser(@RequestParam("userId") Long userId) {
-        System.out.println("삭제번호:"+userId);
+        System.out.println("삭제번호:" + userId);
         userService.deleteUser(userId);
         return "redirect:/users";
     }
@@ -62,7 +64,4 @@ public class UserController {
         model.addAttribute("user", userService.getUser(userId));
         return "user-register";
     }
-
-
-
 }
