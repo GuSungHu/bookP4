@@ -69,7 +69,7 @@ public class AuthController {
     public String getUserMain(@RequestParam(value = "type", required = false) String type,
                               @RequestParam(value = "text", required = false) String text, Model model) {
         // 로그인 없이 사용자 정보 하드코딩
-        Long userId = 34L;
+        Long userId = 3L;
         User user = userService.getUserById(userId);
 
 // 로그인 구현시 수정.

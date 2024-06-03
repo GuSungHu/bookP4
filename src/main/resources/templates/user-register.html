@@ -38,7 +38,7 @@
                     <input type="text" class="form-control" id="phone" placeholder="핸드폰 번호를 입력하세요" th:field="*{phone}" required />
                     <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" th:text="${user.userId == null} ? '회원가입' : '수정'"></button>
+                <button type="submit" class="btn btn-primary btn-block" th:text="${user.userId == null} ? '회원추가' : '수정'"></button>
                 <button type="button" class="btn btn-secondary btn-block mt-2" onclick="goBack()">돌아가기</button>
                 <input type="hidden" th:field="*{userId}" />
             </form>
