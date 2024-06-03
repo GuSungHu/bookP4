@@ -59,6 +59,7 @@ public class BookService {
 
   public void addBook(BookDTO dto) {
     Book book = mapToBook(dto);
+    book.setAvailable(true);
     bookRepository.save(book);
   }
 
