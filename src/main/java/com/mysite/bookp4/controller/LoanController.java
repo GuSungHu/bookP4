@@ -2,7 +2,10 @@ package com.mysite.bookp4.controller;
 
 import com.mysite.bookp4.dto.LoanDTO;
 import com.mysite.bookp4.dto.UserDTO;
+import com.mysite.bookp4.entity.Book;
+import com.mysite.bookp4.entity.Loan;
 import com.mysite.bookp4.entity.User;
+import com.mysite.bookp4.repository.BookRepository;
 import com.mysite.bookp4.repository.UserRepository;
 import com.mysite.bookp4.service.LoanService;
 import com.mysite.bookp4.service.UserService;
@@ -14,7 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.mysite.bookp4.util.DateTimeUtil.ldtToString;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,6 +30,7 @@ public class LoanController {
   private final LoanService loanService;
   private final UserService userService;
   private final UserRepository userRepository;
+  private final BookRepository bookRepository;
 
   @GetMapping("/loan")
   public String showLoanList(@RequestParam(value = "type", required = false) String type,
@@ -96,4 +104,62 @@ public class LoanController {
     return "redirect:/main";
   }
 
+  @GetMapping("/main/loan")
+  public String showLoanInput(@RequestParam Long userId, Model model) {
+    model.addAttribute("userId", userId);
+    model.addAttribute("loan", "loan");
+    return "loan-input";
+  }
+
+  @GetMapping("/main/return")
+  public String showReturnInput(@RequestParam Long userId, Model model) {
+    model.addAttribute("userId", userId);
+    model.addAttribute("loan", "return");
+    return "loan-input";
+  }
+
+  @PostMapping("/main/loan/form")
+  public String showLoanForm(@RequestParam Long userId, @RequestParam Long bookId, Model model) {
+    Book book = bookRepository.findByBookId(bookId).orElseThrow(()-> new IllegalArgumentException("Invalid bookId:" + bookId));
+    model.addAttribute("userId", userId);
+    model.addAttribute("book", book);
+    model.addAttribute("loan", "loan");
+    model.addAttribute("loan_date", ldtToString(LocalDateTime.now()));
+    model.addAttribute("due_date", ldtToString(LocalDateTime.now().plusDays(7)));
+    return "loan-form";
+  }
+
+  @PostMapping("/main/return/form")
+  public String showReturnForm(@RequestParam Long userId, @RequestParam Long bookId, Model model) {
+    Book book = bookRepository.findByBookId(bookId).orElseThrow(()-> new IllegalArgumentException("Invalid bookId:" + bookId));
+    Loan loan = loanService.searchFromUserAndBook(userId, bookId);
+    model.addAttribute("userId", userId);
+    model.addAttribute("book", book);
+    model.addAttribute("loan", "return");
+    model.addAttribute("loan_date", ldtToString(loan.getLoan_date()));
+    model.addAttribute("due_date", ldtToString(loan.getDue_date()));
+    return "loan-form";
+  }
+
+  @PostMapping("/main/createLoan")
+  public String loanBook(@RequestParam Long bookId, @RequestParam Long userId, Model model) {
+    try {
+      loanService.addLoan(userId, bookId);
+      model.addAttribute("message", "Book loaned successfully");
+    } catch (Exception e) {
+      model.addAttribute("error", e.getMessage());
+    }
+    return "redirect:/main";
+  }
+
+  @PostMapping("/main/returnLoan")
+  public String returnBook(@RequestParam Long bookId, @RequestParam Long userId, Model model) {
+    try {
+      loanService.returnLoan2(userId, bookId);
+      model.addAttribute("message", "Book returned successfully");
+    } catch (Exception e) {
+      model.addAttribute("error", e.getMessage());
+    }
+    return "redirect:/main";
+  }
 }

@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //FindByA(B b)일때 SELECT * FROM USER WHERE A = b
     Optional<User> findByEmail(String email);
 
-    List<User> findByUserId(Long user_id);
+    Optional<User> findByUserId(Long user_id);
     
     List<User> findByNameContaining(String keyword);
 

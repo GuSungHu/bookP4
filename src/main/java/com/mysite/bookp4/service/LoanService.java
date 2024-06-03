@@ -6,11 +6,13 @@ import com.mysite.bookp4.entity.Loan;
 import com.mysite.bookp4.entity.User;
 import com.mysite.bookp4.repository.BookRepository;
 import com.mysite.bookp4.repository.LoanRepository;
+import com.mysite.bookp4.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import com.mysite.bookp4.util.DateTimeUtil;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,6 +25,7 @@ public class LoanService {
 
   private final LoanRepository loanRepository;
   private final BookRepository bookRepository;
+  private final UserRepository userRepository;
   private final ModelMapper modelMapper;
 
 
@@ -32,7 +35,6 @@ public class LoanService {
     if (loan.getLoan_date() != null) dto.setLoan_date(DateTimeUtil.ldtToString(loan.getLoan_date()));
     if (loan.getDue_date() != null) dto.setDue_date(DateTimeUtil.ldtToString(loan.getDue_date()));
     if (loan.getReturn_date() != null) dto.setReturn_date(DateTimeUtil.ldtToString(loan.getReturn_date()));
-    System.out.println(dto.toString());
     return dto;
   }
 
@@ -88,11 +90,17 @@ public class LoanService {
   }
 
   //대여
-  public void addLoan(LoanDTO dto) {
-    Loan loan = modelMapper.map(dto, Loan.class);
+  public void addLoan(Long userId, Long bookId) {
+    Loan loan = new Loan();
+    Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + bookId));
+    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + userId));
+
+    loan.setBookId(book);
+    loan.setUserId(user);
     loan.setLoan_date(LocalDateTime.now());
     loan.setDue_date(LocalDateTime.now().plusDays(7));
     loan.setIsReturned(false);
+    book.setAvailable(false);
     loanRepository.save(loan);
   }
 
@@ -108,6 +116,24 @@ public class LoanService {
     bookRepository.save(book);
   }
 
+  public void returnLoan2(Long userId, Long bookId) {
+    User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
+    Book book = bookRepository.findByBookId(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + bookId));
+    Loan loan = loanRepository.findByUserIdAndBookIdAndIsReturnedFalse(user, book).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:"));
+    book.setAvailable(true);
+    loan.setIsReturned(true);
+    loan.setReturn_date(LocalDateTime.now());
+    bookRepository.save(book);
+    loanRepository.save(loan);
+  }
+
+  public Loan searchFromUserAndBook(Long userId, Long bookId) {
+    User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
+    Book book = bookRepository.findByBookId(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + bookId));
+
+    return loanRepository.findByUserIdAndBookIdAndIsReturnedFalse(user, book).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:"));
+  }
+
   //연장
   public void extendDueDate(Long id, int days) {
     Loan loan = loanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:" + id));
@@ -119,4 +145,6 @@ public class LoanService {
   public void deleteLoan(Long id) {
     loanRepository.deleteById(id);
   }
+
+
 }
