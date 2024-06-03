@@ -20,7 +20,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             response.sendRedirect("/admin");
         } else {
-            response.sendRedirect("/users");
+            response.sendRedirect("/main");
         }
     }
 }

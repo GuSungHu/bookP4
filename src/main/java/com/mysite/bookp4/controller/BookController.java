@@ -56,8 +56,8 @@ public class BookController {
 
   @PostMapping("books/save")
   public String setBook(@ModelAttribute BookDTO book) {
-    bookService.setBook(book);
-    System.out.println("이게 될까?");
+    if(book.getBookId()==null) bookService.addBook(book);
+    else bookService.setBook(book);
     return "redirect:/books";
   }
 }
