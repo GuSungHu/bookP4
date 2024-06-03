@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import com.mysite.bookp4.util.DateTimeUtil;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -117,9 +116,9 @@ public class LoanService {
   }
 
   public void returnLoan2(Long userId, Long bookId) {
-    User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
-    Book book = bookRepository.findByBookId(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + bookId));
-    Loan loan = loanRepository.findByUserIdAndBookIdAndIsReturnedFalse(user, book).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:"));
+    User user = getUser(userId);
+    Book book = getBook(bookId);
+    Loan loan = getLoan(user, book);
     book.setAvailable(true);
     loan.setIsReturned(true);
     loan.setReturn_date(LocalDateTime.now());
@@ -128,9 +127,21 @@ public class LoanService {
   }
 
   public Loan searchFromUserAndBook(Long userId, Long bookId) {
-    User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
-    Book book = bookRepository.findByBookId(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + bookId));
+    User user = getUser(userId);
+    Book book = getBook(bookId);
 
+    return getLoan(user, book);
+  }
+
+  private Book getBook(Long bookId) {
+    return bookRepository.findByBookId(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + bookId));
+  }
+
+  private User getUser(Long userId) {
+    return userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
+  }
+
+  private Loan getLoan(User user, Book book) {
     return loanRepository.findByUserIdAndBookIdAndIsReturnedFalse(user, book).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:"));
   }
 
