@@ -62,8 +62,14 @@ public class BookService {
     bookRepository.save(book);
   }
 
-  public void updateBook(BookDTO dto) {
-    Book book = bookRepository.findByBookId(dto.getBookId());
+  public void setBook(BookDTO dto) {
+    Optional<Book> _book = bookRepository.findByBookId(dto.getBookId());
+    Book book;
+    if(_book.isPresent()) {
+      book = _book.get();
+    } else {
+      book = new Book();
+    }
     book.setTitle(dto.getTitle());
     book.setAuthor(dto.getAuthor());
     book.setIsbn(dto.getIsbn());
@@ -74,7 +80,7 @@ public class BookService {
 
   public void deleteBook(Long bookId) {
     // 특정 Book 엔티티와 관련된 Loan 엔티티의 수를 확인
-    long loanCount = loanRepository.countByBookId(bookRepository.findByBookId(bookId));
+    long loanCount = loanRepository.countByBookId(bookRepository.findByBookId(bookId).orElseThrow(() -> new IllegalArgumentException("BookId가 없습니다 :" + bookId)));
 
     if (loanCount == 0) {
       // 관련된 Loan 엔티티가 없으면 Book 엔티티 삭제

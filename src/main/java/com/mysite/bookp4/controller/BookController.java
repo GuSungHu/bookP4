@@ -54,9 +54,10 @@ public class BookController {
     return "book-detail";
   }
 
-//  @PostMapping("books/save")
-//  public String saveBook(@ModelAttribute Book book) {
-//    bookService.save(book);
-//    return "redirect:/books";
-//  }
+  @PostMapping("books/save")
+  public String setBook(@ModelAttribute BookDTO book) {
+    bookService.setBook(book);
+    System.out.println("이게 될까?");
+    return "redirect:/books";
+  }
 }

@@ -7,7 +7,7 @@
     <h3 class="text-center" th:text="${book.bookId}==null ? '도서 등록' : '도서 수정'">도서 등록/수정</h3>
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form th:action="@{/book/save}" th:object="${book}" method="post">
+            <form th:action="@{/books/save}" th:object="${book}" method="post">
                 <div class="mb-3" th:if="${book.bookId != null}">
                     <label for="id" class="form-label">등록번호</label>
                     <input type="text" class="form-control" id="id" th:field="*{bookId}" readonly>
