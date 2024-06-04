@@ -90,17 +90,19 @@ public class LoanService {
 
   //대여
   public void addLoan(Long userId, Long bookId) {
-    Loan loan = new Loan();
-    Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + bookId));
-    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + userId));
 
-    loan.setBookId(book);
-    loan.setUserId(user);
-    loan.setLoan_date(LocalDateTime.now());
-    loan.setDue_date(LocalDateTime.now().plusDays(7));
-    loan.setIsReturned(false);
-    book.setAvailable(false);
-    loanRepository.save(loan);
+    Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + bookId));
+    if(book.isAvailable()) {
+      Loan loan = new Loan();
+      User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
+      loan.setBookId(book);
+      loan.setUserId(user);
+      loan.setLoan_date(LocalDateTime.now());
+      loan.setDue_date(LocalDateTime.now().plusDays(7));
+      loan.setIsReturned(false);
+      book.setAvailable(false);
+      loanRepository.save(loan);
+    }
   }
 
   //수정(반납)
@@ -145,7 +147,7 @@ public class LoanService {
     return loanRepository.findByUserIdAndBookIdAndIsReturnedFalse(user, book).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:"));
   }
 
-  //연장
+  //기간 연장
   public void extendDueDate(Long id, int days) {
     Loan loan = loanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:" + id));
     loan.setDue_date(loan.getDue_date().plusDays(days));
@@ -156,6 +158,4 @@ public class LoanService {
   public void deleteLoan(Long id) {
     loanRepository.deleteById(id);
   }
-
-
 }
