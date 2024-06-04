@@ -1,46 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout::head"></head>
-  <body>
-    <div class="container">
-      <div class="row justify-content-center mt-5">
-        <div class="col-md-4">
-          <h3 class="text-center">로그인</h3>
-          <form id="loginForm" th:action="@{/login}" method="post">
-            <div th:if="${param.error}">잘못된 이메일 또는 패스워드 입니다</div><br>
-            <div th:if="${param.logout}">
-              <div class="alert help-block">로그아웃 되었습니다</div>
-            </div>
-            <div th:if="${successMsg}">
-              <h1>가입성공!</h1>
-            </div>
-            <div class="form-group">
-              <label for="email">아이디</label>
-              <input
-                type="text"
-                class="form-control"
-                id="email"
-                name="email"
-                placeholder="이메일을 입력하세요" autofocus="autofocus"/>
-            </div>
-            <div class="form-group">
-              <label for="password">비밀번호</label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                name="password"
-                placeholder="비밀번호를 입력하세요" />
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">
-              로그인
-            </button>
-            <a th:href="@{/register}" class="btn btn-link btn-block">회원가입</a>
-          </form>
+<body>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+      <h3 class="text-center">로그인</h3>
+      <form id="loginForm" th:action="@{/login}" method="post">
+        <div th:if="${param.error}" class="alert alert-danger">잘못된 이메일 또는 패스워드 입니다</div>
+        <div th:if="${param.logout}" class="alert alert-info">
+          로그아웃 되었습니다
         </div>
-      </div>
+        <div th:if="${successMsg}" class="alert alert-success">
+          가입성공!
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">아이디</label>
+          <input
+                  type="text"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="이메일을 입력하세요"
+                  autofocus="autofocus"/>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">비밀번호</label>
+          <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="비밀번호를 입력하세요" />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">
+          로그인
+        </button>
+        <a th:href="@{/register}" class="btn btn-link w-100 mt-2">회원가입</a>
+      </form>
     </div>
-    <script th:src="@{/js/login.js}"></script>
-    <script th:replace="layout::bootstrap-js"></script>
-  </body>
+  </div>
+</div>
+<script th:src="@{/js/login.js}"></script>
+<script th:replace="layout::bootstrap-js"></script>
+</body>
 </html>

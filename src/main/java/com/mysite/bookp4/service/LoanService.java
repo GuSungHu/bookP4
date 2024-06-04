@@ -150,8 +150,10 @@ public class LoanService {
   //기간 연장
   public void extendDueDate(Long id, int days) {
     Loan loan = loanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:" + id));
-    loan.setDue_date(loan.getDue_date().plusDays(days));
-    loanRepository.save(loan);
+    if(!loan.getIsReturned()) {
+      loan.setDue_date(loan.getDue_date().plusDays(days));
+      loanRepository.save(loan);
+    }
   }
 
   //삭제 (only admin)

@@ -66,7 +66,7 @@ public class LoanController {
 
   @PostMapping("/loan/{id}/extend")
   public String extendLoan(@PathVariable("id") Long id) {
-    loanService.extendDueDate(id, 3);
+    loanService.extendDueDate(id, 1);
     return "redirect:/loan/" + id;
   }
 
@@ -78,7 +78,7 @@ public class LoanController {
 
   @PostMapping("/loan/user/{userId}/extend")
   public String extendLoan2(@RequestParam("loanId") Long loanId, @PathVariable("userId") Long userId) {
-    loanService.extendDueDate(loanId, 3);
+    loanService.extendDueDate(loanId, 1);
     return "redirect:/loan/user/" + userId;
   }
 
@@ -99,7 +99,7 @@ public class LoanController {
   public String extendLoan3(@RequestParam("loanId") Long loanId, @RequestParam("userId") Long userId, Model model) {
     User user = userService.getUserById(userId);
 
-    loanService.extendDueDate(loanId, 3);
+    loanService.extendDueDate(loanId, 1);
     model.addAttribute("user", user);
     return "redirect:/main";
   }
