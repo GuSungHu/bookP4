@@ -30,7 +30,8 @@ public class CustomSecurityConfig {
                         authz
                                 .requestMatchers("/js/**", "/css/**").permitAll()
                                 .requestMatchers("/login","/register","/registUser").permitAll()//여기만 열음
-                                .requestMatchers("/admin").hasRole("ADMIN")
+                                .requestMatchers("/main/**").hasRole("USER")
+                                .requestMatchers("/admin", "loan/**", "books/**", "users/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()//전체 허용.permitAll() , 제외한 주소 인증받기(로그인 폼 나옴)리퀘스트 매처의 주소들은 허가하고 그 외의 주소는 인증 요구함
                 )
                 .formLogin(form -> form

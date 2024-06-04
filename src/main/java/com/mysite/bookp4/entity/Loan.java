@@ -24,9 +24,10 @@ public class Loan {
   @Column(nullable = false, name = "is_returned")
   private Boolean isReturned;
 
-  @Column(nullable = false)
-  private LocalDateTime loan_date;
-  private LocalDateTime due_date;
+  @Column(nullable = false, name = "loan_date")
+  private LocalDateTime loanDate;
+  @Column(nullable = false, name = "due_date")
+  private LocalDateTime dueDate;
   private LocalDateTime return_date;
 
 

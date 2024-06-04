@@ -13,6 +13,7 @@ import com.mysite.bookp4.service.LoanService;
 import com.mysite.bookp4.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,20 +68,30 @@ public class AuthController {
 
     @GetMapping("/main")
     public String getUserMain(@RequestParam(value = "type", required = false) String type,
-                              @RequestParam(value = "text", required = false) String text, Model model) {
+                              @RequestParam(value = "text", required = false) String text,
+                              @RequestParam(defaultValue = "0") int page,
+                              Model model) {
         User user = userService.getLoggedInUser();
 
         List<LoanDTO> loans = loanService.getUnreturnedLoansByUserId(user);
-        List<BookDTO> books;
-        if (type == null) books = null;
-        else books = bookService.searchBooks(type, text);
-
+        Page<BookDTO> books;
+        if (type == null){
+            books=null;
+            model.addAttribute("books", books);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", 0);
+        }
+        else{
+            books = bookService.searchBooks(type, text, page);
+            model.addAttribute("books", books.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", books.getTotalPages());
+        }
         model.addAttribute("user", user);
         model.addAttribute("loans",loans);
-        model.addAttribute("books", books);
+
+        model.addAttribute("type", type);
+        model.addAttribute("text", text);
         return "user-main";
     }
-
-
-
 }

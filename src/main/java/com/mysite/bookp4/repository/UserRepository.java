@@ -2,6 +2,8 @@ package com.mysite.bookp4.repository;
 
 
 import com.mysite.bookp4.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,8 +14,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     Optional<User> findByUserId(Long user_id);
-    
-    List<User> findByNameContaining(String keyword);
 
-    List<User> findByPhoneContaining(String keyword);
+    Page<User> findAll(Pageable pageable);
+    
+    Page<User> findByNameContaining(String keyword, Pageable pageable);
+
+    Page<User> findByPhoneContaining(String keyword, Pageable pageable);
 }

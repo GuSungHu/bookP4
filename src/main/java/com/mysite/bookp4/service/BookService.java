@@ -1,13 +1,12 @@
 package com.mysite.bookp4.service;
 
 import com.mysite.bookp4.dto.BookDTO;
-import com.mysite.bookp4.dto.LoanDTO;
 import com.mysite.bookp4.entity.Book;
-import com.mysite.bookp4.entity.Loan;
 import com.mysite.bookp4.repository.BookRepository;
 import com.mysite.bookp4.repository.LoanRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class BookService {
   private final ModelMapper modelMapper;
   private final LoanRepository loanRepository;
 
-  private List<BookDTO> booksToDto(List<Book> books) {
+  private List<BookDTO> bookPageToDtoList(Page<Book> books) {
     List<BookDTO> dtoList = new ArrayList<>();
     for (Book book : books) {
       dtoList.add(mapToDTO(book));
@@ -33,22 +32,26 @@ public class BookService {
   private BookDTO mapToDTO(Book book) {
     return modelMapper.map(book, BookDTO.class);
   }
+
   private Book mapToBook(BookDTO dto) {
     return modelMapper.map(dto, Book.class);
   }
 
-  public List<BookDTO> getAllBooks() {
-    return booksToDto(bookRepository.findAll());
+  public Page<BookDTO> getAllBooks(int page) {
+    Pageable pageable = PageRequest.of(page, 15, Sort.by("bookId").descending());
+    Page<Book> books = bookRepository.findAll(pageable);
+    return new PageImpl<>(bookPageToDtoList(books), pageable, books.getTotalElements());
   }
 
-  public List<BookDTO> searchBooks(String type, String text) {
-    List<Book> books;
+  public Page<BookDTO> searchBooks(String type, String text, int page) {
+    Page<Book> books;
+    Pageable pageable = PageRequest.of(page, 15, Sort.by("bookId").descending());
     if ("title".equals(type)) {
-      books = bookRepository.findByTitleContainingIgnoreCase(text);
+      books = bookRepository.findByTitleContainingIgnoreCase(text, pageable);
     } else {
-      books = bookRepository.findByAuthorContainingIgnoreCase(text);
+      books = bookRepository.findByAuthorContainingIgnoreCase(text, pageable);
     }
-    return booksToDto(books);
+    return new PageImpl<>(bookPageToDtoList(books), pageable, books.getTotalElements());
   }
 
   public BookDTO getBookById(Long bookId) {
@@ -66,7 +69,7 @@ public class BookService {
   public void setBook(BookDTO dto) {
     Optional<Book> _book = bookRepository.findByBookId(dto.getBookId());
     Book book;
-    if(_book.isPresent()) {
+    if (_book.isPresent()) {
       book = _book.get();
     } else {
       book = new Book();

@@ -4,11 +4,10 @@ import com.mysite.bookp4.dto.BookDTO;
 import com.mysite.bookp4.entity.Book;
 import com.mysite.bookp4.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,14 +16,20 @@ public class BookController {
 
   @GetMapping("/books")
   public String showBookList(@RequestParam(required = false) String type,
-                             @RequestParam(required = false) String text, Model model) {
-    List<BookDTO> books;
+                             @RequestParam(required = false) String text,
+                             @RequestParam(defaultValue = "0") int page,
+                             Model model) {
+    Page<BookDTO> books;
     if (type != null && text != null) {
-      books = bookService.searchBooks(type, text);
+      books = bookService.searchBooks(type, text, page);
     } else {
-      books = bookService.getAllBooks();
+      books = bookService.getAllBooks(page);
     }
-    model.addAttribute("books", books);
+    model.addAttribute("books", books.getContent());
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", books.getTotalPages());
+    model.addAttribute("type", type);
+    model.addAttribute("text", text);
     return "book-list";
   }
 
@@ -45,9 +50,14 @@ public class BookController {
     model.addAttribute("book", bookService.getBookById(bookId));
     return "book-form";
   }
-
   @GetMapping("books/view/{bookId}")
   public String showViewBookDetail(@PathVariable Long bookId, Model model) {
+    model.addAttribute("book", bookService.getBookById(bookId));
+    return "book-detail";
+  }
+
+  @GetMapping("main/book/{bookId}")
+  public String showViewBookDetail2(@PathVariable Long bookId, Model model) {
     model.addAttribute("book", bookService.getBookById(bookId));
     return "book-detail";
   }

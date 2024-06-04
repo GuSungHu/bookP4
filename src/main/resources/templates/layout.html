@@ -32,9 +32,27 @@
 <nav th:fragment="user-nav" class="navbar navbar-light bg-light d-flex flex-row">
     <a class="navbar-brand ms-4" href="/main">메인 페이지</a>
     <div class="d-flex">
-        <a class="nav-link btn btn-secondary text-white me-1" th:href="@{/updateUser(userId=${user.userId})}">내 정보 수정</a>
+        <a class="nav-link btn btn-secondary text-white me-1" th:href="@{main/updateUser}">내 정보 수정</a>
         <a class="nav-link btn btn-danger text-white me-4" th:href="@{/logout}">로그아웃</a>
     </div>
+</nav>
+
+<nav th:if="${totalPages != 0}" th:fragment="page" aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" href="javascript:void(0)" th:onclick="'navigate(' + (${currentPage} - 1) + ')'" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${pageNum == currentPage} ? 'active'">
+            <a class="page-link" href="javascript:void(0)" th:onclick="'navigate(' + ${pageNum} + ')'" th:text="${pageNum + 1}">1</a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+            <a class="page-link" href="javascript:void(0)" th:onclick="'navigate(' + (${currentPage} + 1) + ')'" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
 </nav>
 
 <script th:fragment="bootstrap-js" src="/js/bootstrap.min.js"></script>

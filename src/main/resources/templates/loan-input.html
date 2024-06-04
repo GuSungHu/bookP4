@@ -6,8 +6,8 @@
   <h2 class="text-center" th:text="${loan == 'loan' ? '도서 대출' : '도서 반납'}"></h2>
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <form th:action="|${loan == 'loan' ? '/main/loan/form' : '/main/return/form'}|" method="post">
-        <input type="hidden" th:value="${userId}" name="userId" />
+      <form th:action="@{/main/check}" method="post">
+        <input type="hidden" th:value="${loan}" name="loan" />
         <div class="mb-3">
           <label for="book_id" class="form-label">도서 번호 입력</label>
           <input type="text" class="form-control" id="book_id" name="bookId" placeholder="도서 번호를 입력하세요" required />

@@ -11,8 +11,8 @@
       <h3 class="d-flex justify-content-between">
         <span><span th:text="${user.name}"></span>님의 대출 현황 </span>
         <span>
-          <a class="btn btn-info text-white" th:href="@{/main/loan(userId=${user.userId})}">대출</a>
-          <a class="btn btn-primary text-white" th:href="@{/main/return(userId=${user.userId})}">반납</a>
+          <a class="btn btn-info text-white" th:href="@{/main/loan}">대출</a>
+          <a class="btn btn-primary text-white" th:href="@{/main/return}">반납</a>
         </span>
       </h3>
       <table class="table">
@@ -32,7 +32,6 @@
           <td>
             <form th:action="@{/main/extend}" method="post" style="display: inline;">
               <input type="hidden" name="loanId" th:value="${loan.loanId}" />
-              <input type="hidden" name="userId" th:value="${user.userId}" />
               <button type="submit" class="btn btn-warning btn-spacing">연장</button>
             </form>
           </td>
@@ -71,13 +70,16 @@
           <td th:text="${book.author}"></td>
           <td th:text="${book.category}"></td>
           <td th:text="${book.isAvailable ? 'Yes' : 'No'}"></td>
-          <td><a th:href="@{/books/view/{id}(id=${book.bookId})}" class="btn btn-primary btn-sm">조회</a></td>
+          <td><a th:href="@{/main/book/{id}(id=${book.bookId})}" class="btn btn-primary btn-sm">조회</a></td>
         </tr>
         </tbody>
       </table>
     </div>
   </div>
+  <nav th:replace="layout::page"></nav>
 </div>
+<script th:src="@{/js/page.js}"></script>
 <script th:replace="layout::bootstrap-js"></script>
+
 </body>
 </html>

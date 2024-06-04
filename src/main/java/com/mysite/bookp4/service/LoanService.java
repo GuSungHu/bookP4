@@ -9,14 +9,13 @@ import com.mysite.bookp4.repository.LoanRepository;
 import com.mysite.bookp4.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import com.mysite.bookp4.util.DateTimeUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +30,14 @@ public class LoanService {
   //변환
   private LoanDTO loanToDto(Loan loan) {
     LoanDTO dto = modelMapper.map(loan, LoanDTO.class);
-    if (loan.getLoan_date() != null) dto.setLoan_date(DateTimeUtil.ldtToString(loan.getLoan_date()));
-    if (loan.getDue_date() != null) dto.setDue_date(DateTimeUtil.ldtToString(loan.getDue_date()));
+    if (loan.getLoanDate() != null) dto.setLoan_date(DateTimeUtil.ldtToString(loan.getLoanDate()));
+    if (loan.getDueDate() != null) dto.setDue_date(DateTimeUtil.ldtToString(loan.getDueDate()));
     if (loan.getReturn_date() != null) dto.setReturn_date(DateTimeUtil.ldtToString(loan.getReturn_date()));
     return dto;
   }
 
   //리스트 변환
-  private List<LoanDTO> loanListToDtoList(List<Loan> loanList) {
+  private List<LoanDTO> loanPageToDtoList(Page<Loan> loanList) {
     List<LoanDTO> dtoList = new ArrayList<>();
     for (Loan loan : loanList) {
       dtoList.add(loanToDto(loan));
@@ -48,39 +47,38 @@ public class LoanService {
 
 
   //리스트 read
-  public List<LoanDTO> getAllLoans() {
-    List<Loan> loanList = loanRepository.findAll();
-    return loanListToDtoList(loanList);
+  public Page<LoanDTO> getAllLoans(int page) {
+    Pageable pageable = PageRequest.of(page, 15, Sort.by("loanDate").descending());
+    Page<Loan> loans = loanRepository.findAll(pageable);
+    return new PageImpl<>(loanPageToDtoList(loans), pageable, loans.getTotalElements());
   }
 
-  public List<LoanDTO> searchLoans(String type, String text) {
-    List<Loan> loans;
+  public Page<LoanDTO> searchLoans(String type, String text, int page) {
+
+    Pageable pageable = PageRequest.of(page, 15, Sort.by("loanDate").descending());
+    Page<Loan> loans;
+
     if ("title".equals(type)) {
-      loans = loanRepository.findByBookTitleContaining(text);
+      loans = loanRepository.findByBookTitleContaining(text, pageable);
     } else {
-      loans = loanRepository.findByUserNameContaining(text);
+      loans = loanRepository.findByUserNameContaining(text, pageable);
     }
-    return loanListToDtoList(loans);
-  }
 
-  public List<LoanDTO> getLoansByUserId(User user) {
-    List<Loan> loans = loanRepository.findByUserId(user);
-    return loanListToDtoList(loans);
+    return new PageImpl<>(loanPageToDtoList(loans), pageable, loans.getTotalElements());
   }
 
   public List<LoanDTO> getUnreturnedLoansByUserId(User user) {
-    List<Loan> loans = loanRepository.findByUserIdAndIsReturnedFalse(user);
-    return loanListToDtoList(loans);
+    List<LoanDTO> dtoList = new ArrayList<>();
+    List<Loan> list = loanRepository.findByUserIdAndIsReturnedFalse(user);
+    for (Loan loan : list) dtoList.add(loanToDto(loan));
+    return dtoList;
   }
 
-  public List<LoanDTO> getUnreturnedLoansOrderedByDueDate() {
-    List<Loan> loans = loanRepository.findUnreturnedLoans();
-    return loanListToDtoList(loans.stream()
-            .sorted(Comparator.comparing(Loan::getDue_date))
-            .collect(Collectors.toList()));
+  public Page<LoanDTO> getUnreturnedLoans(int page) {
+    Pageable pageable = PageRequest.of(page, 15, Sort.by("dueDate").ascending());
+    Page<Loan> loans = loanRepository.findUnreturnedLoans(pageable);
+    return new PageImpl<>(loanPageToDtoList(loans), pageable, loans.getTotalElements());
   }
-
-
 
   //개별 read
   public LoanDTO getLoanById(Long id) {
@@ -92,13 +90,13 @@ public class LoanService {
   public void addLoan(Long userId, Long bookId) {
 
     Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + bookId));
-    if(book.isAvailable()) {
+    if (book.isAvailable()) {
       Loan loan = new Loan();
       User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
       loan.setBookId(book);
       loan.setUserId(user);
-      loan.setLoan_date(LocalDateTime.now());
-      loan.setDue_date(LocalDateTime.now().plusDays(7));
+      loan.setLoanDate(LocalDateTime.now());
+      loan.setDueDate(LocalDateTime.now().plusDays(7));
       loan.setIsReturned(false);
       book.setAvailable(false);
       loanRepository.save(loan);
@@ -150,8 +148,8 @@ public class LoanService {
   //기간 연장
   public void extendDueDate(Long id, int days) {
     Loan loan = loanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid loan Id:" + id));
-    if(!loan.getIsReturned()) {
-      loan.setDue_date(loan.getDue_date().plusDays(days));
+    if (!loan.getIsReturned()) {
+      loan.setDueDate(loan.getDueDate().plusDays(days));
       loanRepository.save(loan);
     }
   }
