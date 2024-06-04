@@ -37,7 +37,7 @@ public class AuthController {
         if (principal == null) {
             return "login";
         }
-       return "redirect:/users";
+       return "redirect:/main";
     }
 
     @GetMapping("/register")
