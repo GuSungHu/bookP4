@@ -3,13 +3,13 @@
 <head th:replace="layout::head"></head>
 <body>
 <nav th:replace="layout::admin-nav"></nav>
-<div class = " container mt-5">
+<div class=" container mt-5">
     <h3 class="text-center"> 도서 상세 정보</h3>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">제목: <span th:text = "${book.title}"></span></h5>
+                    <h5 class="card-title">제목: <span th:text="${book.title}"></span></h5>
                     <h6 class="card-subtitle mb-2 text-muted">
                         저자: <span th:text="${book.author}"></span>
                     </h6>
@@ -18,12 +18,10 @@
                     <p class="card-text">대출 가능 여부: <span th:text="${book.available} ? 'Yes' : 'No' "></span></p>
                     <a href="javascript:history.back()" class="btn btn-danger">뒤로</a>
                 </div>
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
             </div>
         </div>
     </div>
 </div>
+<script th:replace="layout::bootstrap-js"></script>
 </body>
 </html>

@@ -1,12 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>회원가입</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-</head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::head"></head>
 <body>
+<nav th:replace="layout::user-nav"></nav>
 <div class="container">
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
@@ -46,5 +42,6 @@
     </div>
 </div>
 <script th:src="@{/js/validateForm.js}"></script>
+<script th:replace="layout::bootstrap-js"></script>
 </body>
 </html>

@@ -3,8 +3,6 @@ package com.mysite.bookp4.controller;
 import com.mysite.bookp4.dto.BookDTO;
 import com.mysite.bookp4.entity.Book;
 import com.mysite.bookp4.service.BookService;
-import com.mysite.bookp4.service.LoanService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

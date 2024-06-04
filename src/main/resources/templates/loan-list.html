@@ -3,6 +3,7 @@
 <head th:replace="layout::head"></head>
 <body>
 <nav th:replace="layout::admin-nav"></nav>
+<div class="container mt-5">
     <h3 class="text-center">대출 목록 조회</h3>
     <form class="row g-3 my-4" method="get" action="/loan">
         <div class="col-auto">
@@ -46,6 +47,6 @@
     </table>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:replace="layout::bootstrap-js"></script>
 </body>
 </html>
