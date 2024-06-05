@@ -14,7 +14,7 @@
         </div>
         <button type="submit" class="btn btn-info w-100 mb-2" th:if="${loan == 'loan'}">대출</button>
         <button type="submit" class="btn btn-primary w-100 mb-2" th:if="${loan == 'return'}">반납</button>
-        <button type="button" class="btn btn-danger w-100" onclick="history.back()">취소</button>
+        <a href="/main" class="btn btn-danger w-100">취소</a>
       </form>
     </div>
   </div>
